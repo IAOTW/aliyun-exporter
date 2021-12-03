@@ -3,7 +3,7 @@ package cmd
 import (
 	"os"
 	"strings"
-
+	"time"
 	"github.com/go-kit/kit/log"
 	"github.com/go-kit/kit/log/level"
 	"github.com/spf13/cobra"
@@ -48,6 +48,10 @@ func (o *options) Complete() error {
 	default:
 		logger = log.NewNopLogger()
 	}
+	current := func() time.Time {
+		return time.Now()
+	}
+	logger = log.With(logger, "ts", log.Timestamp(current), "caller", log.DefaultCaller)
 	var lvlOp level.Option
 	switch strings.ToLower(o.logLevel) {
 	case "debug":

@@ -149,7 +149,7 @@ func (c *MetricClient) Collect(namespace string, sub string, m *config.Metric, c
 
 	datapoints, err := c.retrive(sub, m.Name, m.Period)
 	if err != nil {
-		level.Error(c.logger).Log("msg", "failed to retrive datapoints", "namespace", sub, "name", m.String(), "error", err)
+		level.Error(c.logger).Log("msg", "failed to retrive datapoints", "cloudID", c.cloudID, "namespace", sub, "name", m.String(), "error", err)
 		return
 	}
 	for _, dp := range datapoints {
