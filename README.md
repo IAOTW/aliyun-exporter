@@ -32,9 +32,8 @@ go build -o aliyun-exporter
       provider: aliyun # or aliyun_jst
 ```
 
-### prometheus rules
-
-[sample file](https://../deploy/rules.yaml)
+### dashboard
+[Instance Dashboard](https://../dashboards/Aliyun-Instance-Dashboard.json)
 
 ## Limitation
 
@@ -44,7 +43,6 @@ go build -o aliyun-exporter
 ## TODO
 
 - dynamic rate limiter
-- grafana dashboard
 
 ## Ref
 

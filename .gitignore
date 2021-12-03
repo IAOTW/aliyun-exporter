@@ -28,3 +28,4 @@ build/_output
 vendor/
 .vscode/%
 *.log
+config-test.yaml
