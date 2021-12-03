@@ -10,48 +10,13 @@ cd aliyun-exporter
 make tidy
 ```
 
-## Build
-
-```bash
-# Binary
-make bin
-# docker image
-make docker-build
-```
-
 ## Usage
 
 ```bash
-make bin
+# build
+go build -o aliyun-exporter
 # run
-./build/_output/bin/aliyun-exporter serve
-```
-
-## Deploy
-
-### Docker-compose
-
-Pre-requisites:
-
-- Docker
-- docker-compose
-
-```bash
-# copy and modify example.yaml first
-cd deploy
-docker-compose up -d
-```
-
-### Kubernetes
-
-Pre-requisites:
-
-- Kubernetes
-- helm
-
-```bash
-helm install -n monitoring aliyun-exporter deploy/aliyun-exporter
-kubectl get po -n monitoring -w
+./aliyun-exporter serve
 ```
 
 ### prometheus job
