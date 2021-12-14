@@ -3,11 +3,11 @@ credentials:
   tenant1:
     accessKey: xxxxxxxxxxxx
     accessKeySecret: xxxxxxxxxxxx
-    region_id: hangzhou
+    region: hangzhou
   tenant2:
     accessKey: xxxxxxxxxxxx
     accessKeySecret: xxxxxxxxxxxx
-    region_id: hangzhou
+    region: hangzhou
 # ......
 
 metrics:
@@ -20,38 +20,38 @@ metrics:
       measure: Average
       period: 1200
       unit: "%"
-    - name: InternetInRate
-      desc: 公网流入流量平均速率
-      dimensions:
-        - userId
-        - instanceId
-      measure: Average
-      period: 1200
-      unit: "bit/s"
-    - name: InternetOutRate
-      desc: 公网流出流量平均速率
-      dimensions:
-        - userId
-        - instanceId
-      measure: Average
-      period: 1200
-      unit: "bit/s"
-    - name: IntranetInRate
-      desc: 内网流入流量平均速率
-      dimensions:
-        - userId
-        - instanceId
-      measure: Average
-      period: 1200
-      unit: "bit/s"
-    - name: IntranetOutRate
-      desc: 内网流出带宽使用率
-      dimensions:
-        - userId
-        - instanceId
-      measure: Average
-      period: 1200
-      unit: "bit/s"
+#    - name: InternetInRate
+#      desc: 公网流入流量平均速率
+#      dimensions:
+#        - userId
+#        - instanceId
+#      measure: Average
+#      period: 1200
+#      unit: "bit/s"
+#    - name: InternetOutRate
+#      desc: 公网流出流量平均速率
+#      dimensions:
+#        - userId
+#        - instanceId
+#      measure: Average
+#      period: 1200
+#      unit: "bit/s"
+#    - name: IntranetInRate
+#      desc: 内网流入流量平均速率
+#      dimensions:
+#        - userId
+#        - instanceId
+#      measure: Average
+#      period: 1200
+#      unit: "bit/s"
+#    - name: IntranetOutRate
+#      desc: 内网流出带宽使用率
+#      dimensions:
+#        - userId
+#        - instanceId
+#      measure: Average
+#      period: 1200
+#      unit: "bit/s"
     - name: DiskReadBPS
       desc: 所有磁盘读取BPS
       dimensions:

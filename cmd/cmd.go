@@ -2,23 +2,22 @@ package cmd
 
 import (
 	"fmt"
-	"os"
-	"text/tabwriter"
-
 	"github.com/IAOTW/aliyun-exporter/pkg/client"
 	"github.com/IAOTW/aliyun-exporter/pkg/collector"
 	"github.com/IAOTW/aliyun-exporter/pkg/config"
 	"github.com/IAOTW/aliyun-exporter/pkg/handler"
 	"github.com/IAOTW/aliyun-exporter/version"
 	"github.com/spf13/cobra"
+	"os"
+	"text/tabwriter"
 )
 
-const appName = "cloudmonitor"
+const AppName = "cloudmonitor"
 
 // NewRootCommand create root command
 func NewRootCommand() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:           appName,
+		Use:           AppName,
 		Short:         "Exporter for aliyun cloudmonitor",
 		SilenceErrors: true,
 		SilenceUsage:  true,
@@ -44,11 +43,11 @@ func newServeMetricsCommand() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			cms, err := collector.NewCloudMonitorCollector(appName, cfg, o.rateLimit, logger)
+			cms, err := collector.NewCloudMonitorCollector(AppName, cfg, o.rateLimit, logger)
 			if err != nil {
 				return err
 			}
-			h, err := handler.New(o.so.listenAddress, o.so.metricPath, logger, cms)
+			h, err := handler.New(o.so.listenAddress, logger, o.rateLimit, cfg, cms)
 			if err != nil {
 				return err
 			}

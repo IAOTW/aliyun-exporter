@@ -1,13 +1,14 @@
 package collector
 
 import (
+	"github.com/IAOTW/aliyun-exporter/pkg/client"
+	"github.com/IAOTW/aliyun-exporter/pkg/config"
 	"github.com/go-kit/kit/log"
 	"github.com/prometheus/client_golang/prometheus"
 	"sync"
-
-	"github.com/IAOTW/aliyun-exporter/pkg/client"
-	"github.com/IAOTW/aliyun-exporter/pkg/config"
 )
+
+const AppName = "cloudmonitor"
 
 // cloudMonitor ..
 type cloudMonitor struct {
@@ -40,6 +41,22 @@ func NewCloudMonitorCollector(appName string, cfg *config.Config, rate int, logg
 		}
 	}
 	return cloudMonitors, nil
+}
+
+// NewCloudMonitorCollectorFromURL create a new collector from HTTP Request URL for cloud monitor
+func NewCloudMonitorCollectorFromURL(cli *client.MetricClient, cloudID string, cfg *config.Config, rate int, logger log.Logger) map[string]prometheus.Collector {
+	if logger == nil {
+		logger = log.NewNopLogger()
+	}
+	collectors := make(map[string]prometheus.Collector)
+	collectors[cloudID] = &cloudMonitor{
+		namespace: AppName,
+		cfg:       cfg,
+		logger:    logger,
+		client:    cli,
+		rate:      rate,
+	}
+	return collectors
 }
 
 func (m *cloudMonitor) Describe(ch chan<- *prometheus.Desc) {

@@ -17,10 +17,10 @@ type Config struct {
 	// todo: add extra labels
 	Labels        map[string]string    `json:"labels,omitempty"`
 	Metrics       map[string][]*Metric `json:"metrics"` // mapping for namespace and metrics
-	InstanceInfos []string             `json:"instanceInfos"`
+	//InstanceInfos []string             `json:"instanceInfos"`
 }
 
-func (c *Config) setDefaults() {
+func (c *Config) SetDefaults() {
 	for key, _ := range c.Credentials {
 		if c.Credentials[key].Region == "" {
 			credential := c.Credentials[key]
@@ -45,6 +45,6 @@ func Parse(path string) (*Config, error) {
 	if err = yaml.Unmarshal(b, &cfg); err != nil {
 		return nil, err
 	}
-	cfg.setDefaults()
+	cfg.SetDefaults()
 	return &cfg, nil
 }
