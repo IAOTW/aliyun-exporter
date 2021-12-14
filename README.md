@@ -56,7 +56,7 @@ This method can be combined with consul:
 
 ### Register for consul service
 ```shell
-curl -X PUT -d '{"id": "aliyun-exporter001","name": "aliyun-exporter-001","address": "aliyun-exporter","port": 9527,"tags": ["aliyun-exporter","ifcloud"],"Meta":{"tenant":"aliyun-exporter001","accessKey":"xxxx","accessKeySecret":"xxxx","regionId":"xxxx"},"checks": [{"http": "http://aliyun-exporter:9527/healthz", "interval": "30s"}]}' http://consul:8500/v1/agent/service/register
+curl -X PUT -d '{"id": "aliyun-exporter001","name": "aliyun-exporter-001","address": "aliyun-exporter","port": 9527,"tags": ["aliyun-exporter"],"Meta":{"tenant":"aliyun-exporter001","accessKey":"xxxx","accessKeySecret":"xxxx","regionId":"xxxx"},"checks": [{"http": "http://aliyun-exporter:9527/healthz", "interval": "30s"}]}' http://consul:8500/v1/agent/service/register
 ```
 
 ### prometheus job
