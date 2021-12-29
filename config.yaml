@@ -116,3 +116,11 @@ metrics:
       measure: Average
       period: 1200
       unit: "Byte"
+    - name: concurrentConnections
+      desc: 同时连接数
+      dimensions:
+        - userId
+        - instanceId
+      measure: Maximum
+      period: 1200
+      unit: "Count"
