@@ -52,7 +52,7 @@ func New(addr string, logger log.Logger, rate int, cfg *config.Config, c map[str
             <body>
             <h1>Aliyun Exporter</h1>
             <form action="/monitors">
-            <label>tenantId:</label> <input type="text" name="tenant" placeholder="" value="tenant001" style="width:210px" required><br>
+            <label>tenantId:</label> <input type="text" name="tenantId" placeholder="" value="tenant001" style="width:210px" required><br>
             <label>accessKey:</label> <input type="text" name="accessKey" placeholder="" value="" style="width:210px" required><br>
             <label>accessKeySecret:</label> <input type="text" name="accessKeySecret" placeholder="" value="" style="width:210px" required><br>
             <label>regionId:</label> <input type="text" name="regionId" placeholder="" value="cn-hangzhou" style="width:210px"><br>
@@ -95,10 +95,10 @@ func handlerMetrics(w http.ResponseWriter, r *http.Request, c map[string]prometh
 func handlerMonitors(w http.ResponseWriter, r *http.Request, logger log.Logger, rate int, cfg *config.Config) {
 	query := r.URL.Query()
 
-	cloudId := query.Get("tenant")
-	if len(query["tenant"]) != 1 || cloudId == "" {
-		http.Error(w, "'tenant' parameter must be specified once", 400)
-		level.Error(logger).Log("'tenant' parameter must be specified once")
+	cloudId := query.Get("tenantId")
+	if len(query["tenantId"]) != 1 || cloudId == "" {
+		http.Error(w, "'tenantId' parameter must be specified once", 400)
+		level.Error(logger).Log("'tenantId' parameter must be specified once")
 		return
 	}
 

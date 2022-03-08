@@ -24,11 +24,11 @@ Provide a configuration file containing authentication information.
 ```yaml
 credentials:
   # You can obtain monitoring data of multiple tenants by configuring multiple Tenant information.
-  tenant1:
+  tenantId1:
     accessKey: xxxxxxxxxxxx
     accessKeySecret: xxxxxxxxxxxx
     region: cn-hangzhou
-  tenant2:
+  tenantId2:
     accessKey: xxxxxxxxxxxx
     accessKeySecret: xxxxxxxxxxxx
     region: cn-hangzhou
@@ -41,9 +41,6 @@ credentials:
   scrape_timeout: 60s
   static_configs:
   - targets: ['aliyun-exporter:9527']
-    labels:
-      account_name: xxxx
-      provider: aliyun # or aliyun_jst
 ```
 You can visit metrics in http://aliyun-exporter:9527/metrics
 
