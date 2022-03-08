@@ -47,6 +47,7 @@ func (m *Metric) String() string {
 	if m.Alias != "" {
 		return m.Alias
 	}
+	m.Name = strings.Replace(m.Name, ".", "_", -1)
 	if m.Format {
 		return strings.Join([]string{m.Name, formatUnit(m.Unit)}, "_")
 	}

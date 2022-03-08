@@ -1,13 +1,13 @@
 credentials:
   # You can obtain monitoring data of multiple tenants by configuring multiple Tenant information.
-  tenant1:
+  tenantId1:
     accessKey: xxxxxxxxxxxx
     accessKeySecret: xxxxxxxxxxxx
-    region: hangzhou
-  tenant2:
+    region: cn-hangzhou
+  tenantId2:
     accessKey: xxxxxxxxxxxx
     accessKeySecret: xxxxxxxxxxxx
-    region: hangzhou
+    region: cn-hangzhou
 # ......
 
 metrics:
