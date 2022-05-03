@@ -49,6 +49,18 @@ credentials:
 #        target_label: ident
   static_configs:
   - targets: ['aliyun-exporter:9527']
+
+## Docking with didi/nightingale
+#remote_write:
+#  - url: "http://$n9e-server:19000/prometheus/v1/write"
+#    # Configures the queue used to write to remote storage.
+#    queue_config:
+#      # Number of samples to buffer per shard before we start dropping them.
+#      capacity: 10000
+#      # Maximum number of shards, i.e. amount of concurrency.
+#      max_shards: 1
+#      # Maximum number of samples per send.
+#      max_samples_per_send: 500
 ```
 You can visit metrics in http://aliyun-exporter:9527/metrics
 
@@ -103,7 +115,7 @@ vi /etc/prometheus/prometheus.yml
         target_label: __param_regionId
         replacement: $1
         action: replace
-#   # Docking with didi/nightingale
+##    Docking with didi/nightingale
 #    metric_relabel_configs:
 #      - source_labels:
 #          - instanceId
@@ -116,9 +128,22 @@ vi /etc/prometheus/prometheus.yml
         scheme: http
         allow_stale: true
         refresh_interval: 30s
+
+## Docking with didi/nightingale
+#remote_write:
+#  - url: "http://$n9e-server:19000/prometheus/v1/write"
+#    # Configures the queue used to write to remote storage.
+#    queue_config:
+#      # Number of samples to buffer per shard before we start dropping them.
+#      capacity: 10000
+#      # Maximum number of shards, i.e. amount of concurrency.
+#      max_shards: 1
+#      # Maximum number of samples per send.
+#      max_samples_per_send: 500
 ```
 
 Compatible with [didi/nightingale](https://github.com/didi/nightingale)
+![img.png](img/img.png)
 
 ### dashboard
 [Instance Dashboard](https://../dashboards/Aliyun-Instance-Dashboard.json)
