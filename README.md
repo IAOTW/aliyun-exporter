@@ -39,6 +39,14 @@ credentials:
 - job_name: 'aliyun-exporter'
   scrape_interval: 60s
   scrape_timeout: 60s
+#  # Docking with didi/nightingale
+#  relabel_configs:
+#    metric_relabel_configs:
+#      - source_labels:
+#        - instanceId
+#        - cloudID
+#        separator: ;
+#        target_label: ident
   static_configs:
   - targets: ['aliyun-exporter:9527']
 ```
@@ -71,10 +79,6 @@ vi /etc/prometheus/prometheus.yml
         regex: .*aliyun-exporter.*
         replacement: $1
         action: keep
-      - separator: ;
-        regex: __meta_consul_service_metadata_(.+)
-        replacement: $1
-        action: labelmap
       - source_labels: [__meta_consul_service_metadata_tenant]
         separator: ;
         regex: (.*)
@@ -99,6 +103,13 @@ vi /etc/prometheus/prometheus.yml
         target_label: __param_regionId
         replacement: $1
         action: replace
+#   # Docking with didi/nightingale
+#    metric_relabel_configs:
+#      - source_labels:
+#          - instanceId
+#          - __param_tenant
+#        separator: ;
+#        target_label: ident
     consul_sd_configs:
       - server: consul:8500
         tag_separator: ','
@@ -106,6 +117,8 @@ vi /etc/prometheus/prometheus.yml
         allow_stale: true
         refresh_interval: 30s
 ```
+
+Compatible with [didi/nightingale](https://github.com/didi/nightingale)
 
 ### dashboard
 [Instance Dashboard](https://../dashboards/Aliyun-Instance-Dashboard.json)
