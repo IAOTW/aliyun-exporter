@@ -146,7 +146,7 @@ Compatible with [didi/nightingale](https://github.com/didi/nightingale)
 ![img.png](img/img.png)
 
 ### dashboard
-[Instance Dashboard](https://../dashboards/Aliyun-Instance-Dashboard.json)
+[Instance Dashboard](dashboards/Aliyun-Instance-Dashboard.json)
 
 ## Limitation
 
