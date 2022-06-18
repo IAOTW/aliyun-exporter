@@ -150,7 +150,7 @@ Compatible with [didi/nightingale](https://github.com/didi/nightingale)
 
 ## Limitation
 
-- an exporter instance can only scrape metrics from single region
+# - an exporter instance can only scrape metrics from single region (Done)
 - ...
 
 ## TODO
