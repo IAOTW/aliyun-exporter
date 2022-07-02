@@ -68,7 +68,7 @@ func (m *cloudMonitor) Collect(ch chan<- prometheus.Metric) {
 
 	wg := &sync.WaitGroup{}
 	// do collect
-	m.client.SetTransport(m.rate)
+	//m.client.SetTransport(m.rate)
 	for sub, metrics := range m.cfg.Metrics {
 		for i := range metrics {
 			wg.Add(1)
