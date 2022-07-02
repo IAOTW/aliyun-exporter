@@ -3,15 +3,14 @@ package client
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
-	"github.com/aliyun/alibaba-cloud-sdk-go/services/cms"
 	"github.com/IAOTW/aliyun-exporter/pkg/config"
-	"github.com/IAOTW/aliyun-exporter/pkg/ratelimit"
+	cms "github.com/alibabacloud-go/cms-20190101/v7/client"
+	openapi "github.com/alibabacloud-go/darabonba-openapi/client"
+	"github.com/alibabacloud-go/tea/tea"
 	"github.com/go-kit/kit/log"
 	"github.com/go-kit/kit/log/level"
 	"github.com/prometheus/client_golang/prometheus"
 	"sort"
-	"time"
 )
 
 var ignores = map[string]struct{}{
@@ -102,7 +101,14 @@ type MetricClient struct {
 
 // NewMetricClient create metric Client
 func NewMetricClient(cloudID, ak, secret, region string, logger log.Logger) (*MetricClient, error) {
-	cmsClient, err := cms.NewClientWithAccessKey(region, ak, secret)
+	c := &openapi.Config{
+		AccessKeyId:     &ak,
+		AccessKeySecret: &secret,
+		SecurityToken:   &region,
+	}
+	c = c.SetReadTimeout(50)
+	cmsClient := &cms.Client{}
+	cmsClient, err := cms.NewClient(c)
 	if err != nil {
 		return nil, err
 	}
@@ -113,31 +119,37 @@ func NewMetricClient(cloudID, ak, secret, region string, logger log.Logger) (*Me
 	return &MetricClient{cloudID, cmsClient, logger}, nil
 }
 
-func (c *MetricClient) SetTransport(rate int) {
-	rt := ratelimit.New(rate)
-	c.cms.SetTransport(rt)
-}
+//func (c *MetricClient) SetTransport(rate int) {
+//	rt := ratelimit.New(rate)
+//	c.cms.SetTransport(rt)
+//}
 
 // retrive get datapoints for metric
 func (c *MetricClient) retrive(sub string, name string, period string) ([]Datapoint, error) {
-	req := cms.CreateDescribeMetricLastRequest()
-	req.ReadTimeout = 50 * time.Second
-	req.Namespace = sub
-	req.MetricName = name
-	req.Period = period
-	resp, err := c.cms.DescribeMetricLast(req)
-	if err != nil {
-		return nil, err
+	req := &cms.DescribeMetricLastRequest{}
+	req.Namespace = tea.String(sub)
+	req.MetricName = tea.String(name)
+	req.Period = tea.String(period)
+	data, tryErr := func()(_d []Datapoint, _e error) {
+		defer func() {
+			if r := tea.Recover(recover()); r != nil {
+				_e = r
+				_d = nil
+			}
+		}()
+		resp, err := c.cms.DescribeMetricLast(req)
+		if err != nil {
+			return nil, err
+		}
+		var datapoints []Datapoint
+		//util.ToJSONString(tea.ToMap(resp))
+		_ = json.Unmarshal([]byte(*resp.Body.Datapoints), &datapoints)
+		return datapoints, nil
+	}()
+	if tryErr != nil {
+		return nil, tryErr
 	}
-
-	var datapoints []Datapoint
-	if err = json.Unmarshal([]byte(resp.Datapoints), &datapoints); err != nil {
-		// some execpected error
-		level.Debug(c.logger).Log("content", resp.GetHttpContentString(), "error", err)
-		return nil, err
-	}
-
-	return datapoints, nil
+	return data, nil
 }
 
 // Collect do collect metrics into channel
@@ -161,24 +173,6 @@ func (c *MetricClient) Collect(namespace string, sub string, m *config.Metric, c
 			append(dp.Values(m.Dimensions...), c.cloudID)...,
 		)
 	}
-}
-
-// DescribeMetricMetaList return metrics meta list
-func (c *MetricClient) DescribeMetricMetaList(namespaces ...string) (map[string][]cms.Resource, error) {
-	namespaces = filterNamespaces(namespaces...)
-	m := make(map[string][]cms.Resource)
-	for _, ns := range namespaces {
-		req := cms.CreateDescribeMetricMetaListRequest()
-		req.Namespace = ns
-		req.PageSize = requests.NewInteger(100)
-		resp, err := c.cms.DescribeMetricMetaList(req)
-		if err != nil {
-			return nil, err
-		}
-		level.Debug(c.logger).Log("content", resp.GetHttpContentString())
-		m[ns] = resp.Resources.Resource
-	}
-	return m, nil
 }
 
 func filterNamespaces(namespaces ...string) []string {
